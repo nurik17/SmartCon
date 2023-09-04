@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import android.Manifest
 import android.widget.Toast
+import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCounterBinding
 import kz.cifron.smartcon.presentation.dialog.BottomSheetFragment
 import kz.cifron.smartcon.presentation.dialog.FirstDialogFragment
@@ -90,8 +91,10 @@ class CounterFragment : Fragment() {
         navigationBackArrow()
 
         binding.textDetail.setOnClickListener {
-            val firstDialogFragment = FirstDialogFragment()
-            firstDialogFragment.show(parentFragmentManager,"custom_dialog")
+            findNavController().navigate(R.id.action_id_counterFragment_to_firstDialogFragment2)
+        }
+        binding.counterBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment)
         }
     }
 

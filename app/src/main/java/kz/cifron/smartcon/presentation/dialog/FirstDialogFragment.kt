@@ -29,8 +29,7 @@ class FirstDialogFragment : DialogFragment() {
 
 
             button1.setOnClickListener {
-                val otherDialogFragment = BottomSheetFragment()
-                otherDialogFragment.show(childFragmentManager, "other_dialog")
+               dismiss()
             }
 
 
