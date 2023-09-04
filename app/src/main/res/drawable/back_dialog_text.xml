@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Default state -->
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid android:color="#876AFA"/> <!-- Background color when not pressed -->
+            <corners android:radius="8dp"/> <!-- Corner radius to make it rounded -->
+        </shape>
+    </item>
+</selector>

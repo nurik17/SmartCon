@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/id_loginFragment">
+
+    <fragment
+        android:id="@+id/id_loginFragment"
+        android:name="kz.cifron.smartcon.presentation.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_id_loginFragment_to_id_homeFragment"
+            app:destination="@id/id_homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/id_homeFragment"
+        android:name="kz.cifron.smartcon.presentation.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_id_homeFragment_to_counterFragment"
+            app:destination="@id/id_counterFragment" />
+        <argument
+            android:name="task"
+            app:argType="kz.cifron.smartcon.presentation.home.Tasks" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/id_counterFragment"
+        android:name="kz.cifron.smartcon.presentation.counter.CounterFragment"
+        android:label="fragment_counter"
+        tools:layout="@layout/fragment_counter" >
+        <action
+            android:id="@+id/action_id_counterFragment_to_firstDialogFragment2"
+            app:destination="@id/firstDialogFragment" />
+        <action
+            android:id="@+id/action_id_counterFragment_to_secondDialogFragment"
+            app:destination="@id/secondDialogFragment" />
+        <action
+            android:id="@+id/action_id_counterFragment_to_bottomSheetFragment"
+            app:destination="@id/bottomSheetFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/bottomSheetFragment"
+        android:name="kz.cifron.smartcon.presentation.dialog.BottomSheetFragment"
+        android:label="BottomSheetFragment" />
+    <dialog
+        android:id="@+id/firstDialogFragment"
+        android:name="kz.cifron.smartcon.presentation.dialog.FirstDialogFragment"
+        android:label="FirstDialogFragment" />
+    <dialog
+        android:id="@+id/secondDialogFragment"
+        android:name="kz.cifron.smartcon.presentation.dialog.SecondDialogFragment"
+        android:label="SecondDialogFragment" />
+</navigation>

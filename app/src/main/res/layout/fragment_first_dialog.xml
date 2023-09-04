@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            app:cardCornerRadius="10dp"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/main_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Выбрать"
+                android:textStyle="bold"
+                android:textColor="#363636"
+                android:layout_gravity="center"
+                android:textSize="22sp"/>
+
+
+            <TextView
+                android:id="@+id/textView1"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:background="@drawable/back_dialog_text"
+                android:layout_height="wrap_content"
+                android:text="Заполнить акт"
+                android:padding="10dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="#876AFA"
+                android:layout_marginTop="25dp"
+                android:text="Завершить задание"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

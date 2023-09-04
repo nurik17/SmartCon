@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="ring"
+            android:useLevel="false"
+            android:thicknessRatio="20">
+            <solid android:color="#E7E7E7"/>
+        </shape>
+    </item>
+    <item>
+        <shape
+            android:shape="ring"
+            android:useLevel="true"
+            android:thicknessRatio="20">
+            <solid android:color="#82D83F"/>
+        </shape>
+    </item>
+</layer-list>
