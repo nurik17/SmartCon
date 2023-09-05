@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +28,9 @@ class HomeFragment : Fragment() {
 
     private var originalTaskList: List<Tasks> = emptyList()
 
+    private var requestCamera : ActivityResultLauncher<String>? = null
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +40,19 @@ class HomeFragment : Fragment() {
         val taskApiService = TaskRetrofitClient.taskInstanceApi
         val taskRepository = TaskRepository(taskApiService)
         taskViewModel = ViewModelProvider(this, TaskViewModelFactory(taskRepository))[TaskViewModel::class.java]
+
+
+        requestCamera = registerForActivityResult(ActivityResultContracts.RequestPermission(),){
+            if(it){
+                findNavController().navigate(R.id.action_id_homeFragment_to_scannerFragment)
+            }else{
+                Toast.makeText(requireContext(), "camera(scan) permission not granted", Toast.LENGTH_SHORT).show()
+            }
+            binding.imageScan.setOnClickListener {
+                requestCamera?.launch(android.Manifest.permission.CAMERA)
+            }
+        }
+
         return binding.root
     }
 
@@ -52,6 +70,9 @@ class HomeFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
+        binding.imageScan.setOnClickListener {
+            findNavController().navigate(R.id.action_id_homeFragment_to_scannerFragment)
+        }
 
         taskAdapter.setOnItemClickListener {task ->
             val bundle = Bundle()

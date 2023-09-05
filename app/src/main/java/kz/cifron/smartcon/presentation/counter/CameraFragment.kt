@@ -13,12 +13,16 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.ImageCaptureException
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCameraBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -28,7 +32,9 @@ private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss"
 
 class CameraFragment : Fragment() {
 
-    private lateinit var binding: FragmentCameraBinding
+    private var _binding : FragmentCameraBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var cameraExecutor: Executor
     var imageCapture: ImageCapture? = null
 
@@ -45,13 +51,19 @@ class CameraFragment : Fragment() {
             }
         }
 
+    private val galleryLauncher: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                handleGalleryImage(uri)
+            }
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCameraBinding.inflate(inflater, container, false)
-
+        _binding = FragmentCameraBinding.inflate(inflater, container, false)
         cameraExecutor = ContextCompat.getMainExecutor(requireContext())
         return binding.root
     }
@@ -63,8 +75,17 @@ class CameraFragment : Fragment() {
         }
         startCamera()
         checkPermission()
-    }
 
+        binding.btnGallery.setOnClickListener {
+            openGallery()
+        }
+        binding.imageCaptureButton.setOnClickListener {
+            takePhoto()
+        }
+        binding.arrowBackBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
         val contentResolver = requireContext().contentResolver
@@ -92,10 +113,15 @@ class CameraFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    Glide.with(requireContext())
+                    val imageUri = outputFileResults.savedUri
+                    val bundle = Bundle()
+                    bundle.putString("imageUri", imageUri.toString())
+
+                    findNavController().navigate(R.id.action_cameraFragment_to_imageFragment,bundle)
+                    /*Glide.with(requireContext())
                         .load(outputFileResults.savedUri)
                         .circleCrop()
-                        .into(binding.imgGallery)
+                        .into(binding.imgGallery)*/
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -139,6 +165,18 @@ class CameraFragment : Fragment() {
             launcher.launch(REQUEST_PERMISSION)
         }
     }
+
+
+    private fun handleGalleryImage(imageUri: Uri) {
+        Glide.with(requireContext())
+            .load(imageUri)
+            .centerCrop()
+            .into(binding.imgGallery)
+    }
+    private fun openGallery() {
+        galleryLauncher.launch("image/*") // Запуск активности выбора изображения из галереи
+    }
+
 
     companion object {
         private val REQUEST_PERMISSION: Array<String> = buildList {

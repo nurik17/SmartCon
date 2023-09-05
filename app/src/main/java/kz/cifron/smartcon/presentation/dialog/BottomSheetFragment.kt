@@ -13,8 +13,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     private var _binding : FragmentBottomSheetBinding? = null
     private val binding get() = _binding!!
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

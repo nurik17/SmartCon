@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.widget.Toast
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCounterBinding
@@ -44,6 +45,7 @@ class CounterFragment : Fragment() {
         val toggleFlashLightOn = binding.flashLightBtn
         toggleFlashLightOn.setOnClickListener {
             toggleFlashlight()
+            Log.d("CounterFlash", "flash is working")
             Toast.makeText(requireContext(), "flash on", Toast.LENGTH_SHORT).show()
         }
 
@@ -58,16 +60,19 @@ class CounterFragment : Fragment() {
                 1
             )
         }
-
         return binding.root
     }
 
-    private fun toggleFlashlight() {
-        isFlashlightOn = !isFlashlightOn
-        try{
-            cameraManager.setTorchMode(cameraId,isFlashlightOn)
-        }catch (e : CameraAccessException){
-            e.printStackTrace()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        receiveDataFromHome()
+        navigationBackArrow()
+
+        binding.textDetail.setOnClickListener {
+            findNavController().navigate(R.id.action_id_counterFragment_to_firstDialogFragment2)
+        }
+        binding.counterBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment)
         }
     }
 
@@ -83,20 +88,6 @@ class CounterFragment : Fragment() {
         }
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        receiveDataFromHome()
-        navigationBackArrow()
-
-        binding.textDetail.setOnClickListener {
-            findNavController().navigate(R.id.action_id_counterFragment_to_firstDialogFragment2)
-        }
-        binding.counterBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment)
-        }
-    }
 
 
     private fun receiveDataFromHome(){
@@ -116,6 +107,17 @@ class CounterFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
+
+    private fun toggleFlashlight() {
+        isFlashlightOn = !isFlashlightOn
+        try{
+            cameraManager.setTorchMode(cameraId,isFlashlightOn)
+        }catch (e : CameraAccessException){
+            e.printStackTrace()
+        }
+    }
+
+
     private fun showBottomSheet() {
         val bottomSheetFragment = BottomSheetFragment()
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)

@@ -29,7 +29,10 @@ class FirstDialogFragment : DialogFragment() {
 
 
             button1.setOnClickListener {
-               dismiss()
+                val otherDialogFragment = BottomSheetFragment()
+                otherDialogFragment.show(childFragmentManager, "other_dialog")
+                //findNavController().navigate(R.id.action_firstDialogFragment_to_bottomSheetFragment)
+                dismiss()
             }
 
 

@@ -26,6 +26,9 @@
         <argument
             android:name="task"
             app:argType="kz.cifron.smartcon.presentation.home.Tasks" />
+        <action
+            android:id="@+id/action_id_homeFragment_to_scannerFragment"
+            app:destination="@id/scannerFragment" />
 
     </fragment>
 
@@ -66,5 +69,32 @@
     <fragment
         android:id="@+id/cameraFragment"
         android:name="kz.cifron.smartcon.presentation.counter.CameraFragment"
-        android:label="CameraFragment" />
+        android:label="CameraFragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_imageFragment"
+            app:destination="@id/imageFragment" />
+        <argument
+            android:name="imageUri"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="kz.cifron.smartcon.presentation.counter.ImageFragment"
+        android:label="fragment_image"
+        tools:layout="@layout/fragment_image" >
+        <action
+            android:id="@+id/action_imageFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="kz.cifron.smartcon.presentation.counter.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" />
+    <fragment
+        android:id="@+id/scannerFragment"
+        android:name="kz.cifron.smartcon.presentation.counter.ScannerFragment"
+        android:label="fragment_scanner"
+        tools:layout="@layout/fragment_scanner" />
+
 </navigation>
