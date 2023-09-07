@@ -13,18 +13,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import android.Manifest
-import android.content.ContentValues.TAG
 import android.widget.Toast
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCounterBinding
 import kz.cifron.smartcon.presentation.dialog.BottomSheetFragment
-import kz.cifron.smartcon.presentation.dialog.FirstDialogFragment
 import kz.cifron.smartcon.presentation.home.Tasks
 
 class CounterFragment : Fragment() {
     private var _binding : FragmentCounterBinding? = null
     private val binding get() = _binding!!
 
+    private var task : Tasks? = null
     private lateinit var cameraManager: CameraManager
     private lateinit var cameraId : String
     private var isFlashlightOn = false
@@ -69,10 +68,10 @@ class CounterFragment : Fragment() {
         navigationBackArrow()
 
         binding.textDetail.setOnClickListener {
-            findNavController().navigate(R.id.action_id_counterFragment_to_firstDialogFragment2)
+            findNavController().navigate(R.id.action_id_counterFragment_to_firstDialogFragment)
         }
         binding.counterBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment)
+            sendData()
         }
     }
 
@@ -91,16 +90,17 @@ class CounterFragment : Fragment() {
 
 
     private fun receiveDataFromHome(){
-        val task = arguments?.getParcelable<Tasks>("task")
+        task = arguments?.getParcelable<Tasks>("task")
         if (task != null) {
-            binding.textAddress.text = task.ADDR
-            binding.textLsNumber.text = task.LS.toString()
-            binding.textCvNumber.text = task.NAME_SCH
-            binding.textDate.text = task.POVERKA_DATE
+            binding.textAddress.text = task!!.ADDR
+            binding.textLsNumber.text = task!!.LS.toString()
+            binding.textCvNumber.text = task!!.NAME_SCH
+            binding.textDate.text = task!!.POVERKA_DATE
         }else{
             Log.e("CounterFragment", "Task argument is null")
         }
     }
+
 
     private fun navigationBackArrow(){
         binding.arrowBackBtn.setOnClickListener {
@@ -108,6 +108,14 @@ class CounterFragment : Fragment() {
         }
     }
 
+    private fun sendData(){
+        val cameraFragment = CameraFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("task",task)
+        cameraFragment.arguments = bundle
+        findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment,bundle)
+
+    }
     private fun toggleFlashlight() {
         isFlashlightOn = !isFlashlightOn
         try{

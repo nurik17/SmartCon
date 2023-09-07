@@ -79,16 +79,17 @@
         app:layout_constraintStart_toStartOf="@id/password_input"
         android:text="Сохранить" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="48dp"
         android:backgroundTint="#E7E1FE"
-        android:text="Войти"
         android:textColor="@color/white"
+        android:text="Войти"
+        app:cornerRadius="5dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="@id/password_input"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/password_input"
         app:layout_constraintTop_toBottomOf="@+id/save_checkBox" />
 

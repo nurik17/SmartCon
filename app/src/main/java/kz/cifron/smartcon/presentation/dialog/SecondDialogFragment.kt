@@ -8,14 +8,4 @@ import androidx.fragment.app.DialogFragment
 import kz.cifron.smartcon.R
 
 class SecondDialogFragment : DialogFragment() {
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
-        val inflater = LayoutInflater.from(requireContext())
-        val view = inflater.inflate(R.layout.fragment_second_dialog, null)
-        val builder = AlertDialog.Builder(requireContext())
-
-        builder.setView(view)
-        return builder.create()
-    }
 }

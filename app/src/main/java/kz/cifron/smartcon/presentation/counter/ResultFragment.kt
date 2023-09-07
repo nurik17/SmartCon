@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import kz.cifron.smartcon.R
-import kz.cifron.smartcon.databinding.FragmentImageBinding
+import com.bumptech.glide.Glide
 import kz.cifron.smartcon.databinding.FragmentResultBinding
+import kz.cifron.smartcon.presentation.home.Tasks
 
 
 class ResultFragment : Fragment() {
 
     private var _binding : FragmentResultBinding? = null
     private val binding get() = _binding!!
+    private var receivedTask: Tasks? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +31,13 @@ class ResultFragment : Fragment() {
         binding.arrowBackBtn.setOnClickListener {
             findNavController().popBackStack()
         }
+        val receivedTask = arguments?.getParcelable<Tasks>("task")
+        binding.textAddress.text = receivedTask!!.ADDR
+
+        val imageUriString = arguments?.getString("imageUri")
+        Glide.with(requireContext())
+            .load(imageUriString)
+            .into(binding.resultImage)
     }
 
     override fun onDestroy() {

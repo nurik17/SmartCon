@@ -16,6 +16,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +25,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCameraBinding
+import kz.cifron.smartcon.presentation.home.Tasks
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executor
@@ -34,6 +36,8 @@ class CameraFragment : Fragment() {
 
     private var _binding : FragmentCameraBinding? = null
     private val binding get() = _binding!!
+
+    private var receivedTask: Tasks? = null
 
     private lateinit var cameraExecutor: Executor
     var imageCapture: ImageCapture? = null
@@ -79,13 +83,16 @@ class CameraFragment : Fragment() {
         binding.btnGallery.setOnClickListener {
             openGallery()
         }
-        binding.imageCaptureButton.setOnClickListener {
-            takePhoto()
-        }
         binding.arrowBackBtn.setOnClickListener {
             findNavController().popBackStack()
         }
+        arguments?.let {
+            receivedTask = it.getParcelable("task")
+            Log.d("CameraFragment", receivedTask!!.ADDR)
+        }
+
     }
+
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
         val contentResolver = requireContext().contentResolver
@@ -116,6 +123,10 @@ class CameraFragment : Fragment() {
                     val imageUri = outputFileResults.savedUri
                     val bundle = Bundle()
                     bundle.putString("imageUri", imageUri.toString())
+
+                    val imageFragment = ImageFragment()
+                    bundle.putParcelable("task",receivedTask)
+                    imageFragment.arguments = bundle
 
                     findNavController().navigate(R.id.action_cameraFragment_to_imageFragment,bundle)
                     /*Glide.with(requireContext())
@@ -154,6 +165,20 @@ class CameraFragment : Fragment() {
         }, cameraExecutor)
     }
 
+
+    private fun handleGalleryImage(imageUri: Uri) {
+        Glide.with(requireContext())
+            .load(imageUri)
+            .centerCrop()
+            .into(binding.imgGallery)
+    }
+    private fun openGallery() {
+
+        galleryLauncher.launch("image/*") // Запуск активности выбора изображения из галереи
+    }
+
+
+
     private fun checkPermission() {
         val isAllGranted = REQUEST_PERMISSION.all{permission->
             ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
@@ -166,16 +191,6 @@ class CameraFragment : Fragment() {
         }
     }
 
-
-    private fun handleGalleryImage(imageUri: Uri) {
-        Glide.with(requireContext())
-            .load(imageUri)
-            .centerCrop()
-            .into(binding.imgGallery)
-    }
-    private fun openGallery() {
-        galleryLauncher.launch("image/*") // Запуск активности выбора изображения из галереи
-    }
 
 
     companion object {

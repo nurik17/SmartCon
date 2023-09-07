@@ -51,7 +51,4 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         onItemClickListener = listener
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(task : Tasks)
-    }
 }

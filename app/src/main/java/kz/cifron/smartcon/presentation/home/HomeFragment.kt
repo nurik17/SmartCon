@@ -48,9 +48,10 @@ class HomeFragment : Fragment() {
             }else{
                 Toast.makeText(requireContext(), "camera(scan) permission not granted", Toast.LENGTH_SHORT).show()
             }
-            binding.imageScan.setOnClickListener {
+            binding.fabBtn.setOnClickListener {
                 requestCamera?.launch(android.Manifest.permission.CAMERA)
             }
+            binding.fabBtn.setImageResource(R.drawable.ic_scan)
         }
 
         return binding.root
@@ -70,7 +71,7 @@ class HomeFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        binding.imageScan.setOnClickListener {
+        binding.fabBtn.setOnClickListener {
             findNavController().navigate(R.id.action_id_homeFragment_to_scannerFragment)
         }
 
