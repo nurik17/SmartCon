@@ -80,6 +80,9 @@
         <argument
             android:name="task"
             app:argType="kz.cifron.smartcon.presentation.home.Tasks" />
+        <action
+            android:id="@+id/action_cameraFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
 
 

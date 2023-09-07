@@ -58,7 +58,7 @@ class CameraFragment : Fragment() {
     private val galleryLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                handleGalleryImage(uri)
+                galleryNavigation(uri)
             }
         }
 
@@ -145,6 +145,18 @@ class CameraFragment : Fragment() {
                 }
             }
         )
+    }
+
+    private fun galleryNavigation(outputFileResults : Uri){
+        val bundle = Bundle()
+        bundle.putString("imageUri", outputFileResults.toString())
+
+        val resultFragment = ResultFragment()
+        bundle.putParcelable("task",receivedTask)
+        resultFragment.arguments = bundle
+
+        findNavController().navigate(R.id.action_cameraFragment_to_resultFragment,bundle)
+
     }
 
     private fun startCamera() {

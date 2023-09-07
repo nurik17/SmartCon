@@ -18,7 +18,6 @@ class ImageFragment : Fragment() {
 
     private var _binding : FragmentImageBinding? = null
     private val binding get() = _binding!!
-
     private var receivedTask: Tasks? = null
 
     override fun onCreateView(
