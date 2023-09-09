@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kz.cifron.smartcon.databinding.FragmentResultBinding
 import kz.cifron.smartcon.presentation.home.Tasks
 
@@ -37,6 +38,8 @@ class ResultFragment : Fragment() {
         val imageUriString = arguments?.getString("imageUri")
         Glide.with(requireContext())
             .load(imageUriString)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(binding.resultImage)
     }
 

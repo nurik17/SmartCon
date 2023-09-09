@@ -2,6 +2,7 @@ package kz.cifron.smartcon.presentation.counter
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
@@ -99,7 +100,7 @@ class ScannerFragment : Fragment() {
                 if(barcodes.size() != 0){
                     binding.cardViewText!!.post{
                         intentData = barcodes.valueAt(0).displayValue
-                        binding.cardViewText.text = intentData
+                        binding.cardViewText.text = Editable.Factory.getInstance().newEditable(intentData)
                         findNavController().popBackStack()
                     }
                 }

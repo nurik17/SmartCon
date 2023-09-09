@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -22,10 +24,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.ImageCaptureException
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCameraBinding
 import kz.cifron.smartcon.presentation.home.Tasks
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executor
@@ -114,25 +117,28 @@ class CameraFragment : Fragment() {
             cameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    Toast.makeText(
+                    val imageUri = outputFileResults.savedUri
+                    val compressedImageFile = imageUri?.let { compressImage(it) }
+
+                    val originalFileSize = imageUri!!.path?.let { File(it).length() }
+                    val compressedFileSize = compressedImageFile!!.path?.let { File(it).length() }
+
+                    Log.d("CameraFragment", "Original File Size: $originalFileSize bytes")
+                    Log.d("CameraFragment", "Compressed File Size: $compressedFileSize bytes")
+                    /*Toast.makeText(
                         requireContext(),
                         "Photo saved on ${outputFileResults.savedUri}",
                         Toast.LENGTH_SHORT
-                    ).show()
+                    ).show()*/
 
-                    val imageUri = outputFileResults.savedUri
                     val bundle = Bundle()
-                    bundle.putString("imageUri", imageUri.toString())
+                    bundle.putString("imageUri", compressedImageFile.toString())
 
                     val imageFragment = ImageFragment()
                     bundle.putParcelable("task",receivedTask)
                     imageFragment.arguments = bundle
 
                     findNavController().navigate(R.id.action_cameraFragment_to_imageFragment,bundle)
-                    /*Glide.with(requireContext())
-                        .load(outputFileResults.savedUri)
-                        .circleCrop()
-                        .into(binding.imgGallery)*/
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -177,20 +183,9 @@ class CameraFragment : Fragment() {
         }, cameraExecutor)
     }
 
-
-    private fun handleGalleryImage(imageUri: Uri) {
-        Glide.with(requireContext())
-            .load(imageUri)
-            .centerCrop()
-            .into(binding.imgGallery)
-    }
     private fun openGallery() {
-
         galleryLauncher.launch("image/*") // Запуск активности выбора изображения из галереи
     }
-
-
-
     private fun checkPermission() {
         val isAllGranted = REQUEST_PERMISSION.all{permission->
             ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
@@ -203,6 +198,29 @@ class CameraFragment : Fragment() {
         }
     }
 
+    private fun compressImage(imageUri: Uri): Uri {
+        val options = BitmapFactory.Options()
+        options.inSampleSize = 2
+
+        // Load the Bitmap from the imageUri
+        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
+        val bitMap = BitmapFactory.decodeStream(inputStream, null, options)
+        inputStream?.close()
+
+        return if (bitMap != null) {
+            val compressedImageFile = File(requireContext().cacheDir, "compressed_image.jpg")
+
+            val outputStream = FileOutputStream(compressedImageFile)
+            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+
+            Uri.fromFile(compressedImageFile)
+        } else {
+            Log.e("CameraFragment", "compressImage error is null: ", )
+            imageUri
+        }
+    }
 
 
     companion object {

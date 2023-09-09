@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@id/write_text_scan"
         android:focusable="true">
 
-        <TextView
+        <EditText
             android:id="@+id/cardView_text"
             android:layout_width="match_parent"
             android:layout_height="50dp"
