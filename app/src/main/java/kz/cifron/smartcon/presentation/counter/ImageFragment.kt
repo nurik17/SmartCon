@@ -1,22 +1,18 @@
 package kz.cifron.smartcon.presentation.counter
 
-import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.exifinterface.media.ExifInterface
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentImageBinding
 import kz.cifron.smartcon.presentation.home.Tasks
+import kz.cifron.smartcon.presentation.result.ResultFragment
 
 class ImageFragment : Fragment() {
 

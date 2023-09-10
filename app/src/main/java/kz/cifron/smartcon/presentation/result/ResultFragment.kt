@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.counter
+package kz.cifron.smartcon.presentation.result
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

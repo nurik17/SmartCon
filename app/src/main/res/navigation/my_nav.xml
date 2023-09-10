@@ -105,7 +105,7 @@
 
     <fragment
         android:id="@+id/resultFragment"
-        android:name="kz.cifron.smartcon.presentation.counter.ResultFragment"
+        android:name="kz.cifron.smartcon.presentation.result.ResultFragment"
         android:label="fragment_result"
         tools:layout="@layout/fragment_result" />
     <fragment

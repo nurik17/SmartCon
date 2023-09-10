@@ -15,6 +15,8 @@ import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -27,6 +29,7 @@ import androidx.navigation.fragment.findNavController
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCameraBinding
 import kz.cifron.smartcon.presentation.home.Tasks
+import kz.cifron.smartcon.presentation.result.ResultFragment
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -183,6 +186,43 @@ class CameraFragment : Fragment() {
         }, cameraExecutor)
     }
 
+    private fun compressImage(imageUri: Uri): Uri {
+        val options = BitmapFactory.Options()
+        options.inSampleSize = 2
+
+        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
+        val exifInterface = inputStream?.let { ExifInterface(it) }
+        val orientation = exifInterface?.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL)
+
+        var bitMap = BitmapFactory.decodeStream(inputStream, null, options)
+        inputStream?.close()
+
+        if (bitMap != null) {
+            if (orientation != ExifInterface.ORIENTATION_NORMAL) {
+                val matrix = Matrix()
+                when (orientation) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+                    ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+                    ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+                }
+                val rotatedBitmap = Bitmap.createBitmap(bitMap, 0, 0, bitMap.width, bitMap.height, matrix, true)
+                bitMap.recycle()
+                bitMap = rotatedBitmap
+            }
+
+            val compressedImageFile = File(requireContext().cacheDir, "compressed_image.jpg")
+
+            val outputStream = FileOutputStream(compressedImageFile)
+            bitMap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.flush()
+            outputStream.close()
+            return Uri.fromFile(compressedImageFile)
+        } else {
+            Log.e("CameraFragment", "compressImage error is null: ")
+            return imageUri
+        }
+    }
+
     private fun openGallery() {
         galleryLauncher.launch("image/*") // Запуск активности выбора изображения из галереи
     }
@@ -198,29 +238,7 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private fun compressImage(imageUri: Uri): Uri {
-        val options = BitmapFactory.Options()
-        options.inSampleSize = 2
 
-        // Load the Bitmap from the imageUri
-        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
-        val bitMap = BitmapFactory.decodeStream(inputStream, null, options)
-        inputStream?.close()
-
-        return if (bitMap != null) {
-            val compressedImageFile = File(requireContext().cacheDir, "compressed_image.jpg")
-
-            val outputStream = FileOutputStream(compressedImageFile)
-            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-
-            Uri.fromFile(compressedImageFile)
-        } else {
-            Log.e("CameraFragment", "compressImage error is null: ", )
-            imageUri
-        }
-    }
 
 
     companion object {
