@@ -13,10 +13,6 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -30,8 +26,7 @@ import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCameraBinding
 import kz.cifron.smartcon.presentation.home.Tasks
 import kz.cifron.smartcon.presentation.result.ResultFragment
-import java.io.File
-import java.io.FileOutputStream
+
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executor
@@ -67,7 +62,6 @@ class CameraFragment : Fragment() {
                 galleryNavigation(uri)
             }
         }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -121,21 +115,10 @@ class CameraFragment : Fragment() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val imageUri = outputFileResults.savedUri
-                    val compressedImageFile = imageUri?.let { compressImage(it) }
 
-                    val originalFileSize = imageUri!!.path?.let { File(it).length() }
-                    val compressedFileSize = compressedImageFile!!.path?.let { File(it).length() }
-
-                    Log.d("CameraFragment", "Original File Size: $originalFileSize bytes")
-                    Log.d("CameraFragment", "Compressed File Size: $compressedFileSize bytes")
-                    /*Toast.makeText(
-                        requireContext(),
-                        "Photo saved on ${outputFileResults.savedUri}",
-                        Toast.LENGTH_SHORT
-                    ).show()*/
 
                     val bundle = Bundle()
-                    bundle.putString("imageUri", compressedImageFile.toString())
+                    bundle.putString("imageUri", imageUri.toString())
 
                     val imageFragment = ImageFragment()
                     bundle.putParcelable("task",receivedTask)
@@ -186,42 +169,6 @@ class CameraFragment : Fragment() {
         }, cameraExecutor)
     }
 
-    private fun compressImage(imageUri: Uri): Uri {
-        val options = BitmapFactory.Options()
-        options.inSampleSize = 2
-
-        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
-        val exifInterface = inputStream?.let { ExifInterface(it) }
-        val orientation = exifInterface?.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL)
-
-        var bitMap = BitmapFactory.decodeStream(inputStream, null, options)
-        inputStream?.close()
-
-        if (bitMap != null) {
-            if (orientation != ExifInterface.ORIENTATION_NORMAL) {
-                val matrix = Matrix()
-                when (orientation) {
-                    ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
-                    ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
-                    ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
-                }
-                val rotatedBitmap = Bitmap.createBitmap(bitMap, 0, 0, bitMap.width, bitMap.height, matrix, true)
-                bitMap.recycle()
-                bitMap = rotatedBitmap
-            }
-
-            val compressedImageFile = File(requireContext().cacheDir, "compressed_image.jpg")
-
-            val outputStream = FileOutputStream(compressedImageFile)
-            bitMap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-            return Uri.fromFile(compressedImageFile)
-        } else {
-            Log.e("CameraFragment", "compressImage error is null: ")
-            return imageUri
-        }
-    }
 
     private fun openGallery() {
         galleryLauncher.launch("image/*") // Запуск активности выбора изображения из галереи
@@ -239,8 +186,6 @@ class CameraFragment : Fragment() {
     }
 
 
-
-
     companion object {
         private val REQUEST_PERMISSION: Array<String> = buildList {
             add(Manifest.permission.CAMERA)
@@ -249,4 +194,13 @@ class CameraFragment : Fragment() {
             }
         }.toTypedArray()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
+// Фонарик косу дурыстап
+// barcode дурыстап жазу
+//profile жасап тастау
+// бактарды дурыстау

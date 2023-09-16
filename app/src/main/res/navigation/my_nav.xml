@@ -11,7 +11,8 @@
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_id_loginFragment_to_id_homeFragment"
-            app:destination="@id/id_homeFragment" />
+            app:destination="@id/id_homeFragment"
+            app:popUpTo="@id/id_loginFragment" />
     </fragment>
 
     <fragment

@@ -73,11 +73,11 @@ class ScannerFragment : Fragment() {
             .setRequestedPreviewSize(1920,1080)
             .setFacing(CameraSource.CAMERA_FACING_BACK)
             .build()
-        binding.surfaceView!!.holder.addCallback(object : SurfaceHolder.Callback{
+        binding.surfaceView.holder.addCallback(object : SurfaceHolder.Callback{
             @SuppressLint("MissingPermission")
             override fun surfaceCreated(p0: SurfaceHolder) {
                 try{
-                    cameraSource.start(binding.surfaceView!!.holder)
+                    cameraSource.start(binding.surfaceView.holder)
                 }catch (e : IOException){
                     e.printStackTrace()
                 }
@@ -96,9 +96,9 @@ class ScannerFragment : Fragment() {
                 Toast.makeText(requireContext(), "barcode scanner has been stopped", Toast.LENGTH_SHORT).show()
             }
             override fun receiveDetections(detections: Detector.Detections<Barcode>) {
-                var barcodes = detections.detectedItems
+                val barcodes = detections.detectedItems
                 if(barcodes.size() != 0){
-                    binding.cardViewText!!.post{
+                    binding.cardViewText.post{
                         intentData = barcodes.valueAt(0).displayValue
                         binding.cardViewText.text = Editable.Factory.getInstance().newEditable(intentData)
                         findNavController().popBackStack()

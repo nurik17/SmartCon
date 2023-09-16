@@ -1,10 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ConSmart" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:colorPrimary">@color/white</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorOnSecondary">@color/white</item>
+
     </style>
 
     <style name="Theme.ConSmart" parent="Base.Theme.ConSmart" />

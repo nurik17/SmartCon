@@ -13,7 +13,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import android.Manifest
-import android.widget.Toast
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCounterBinding
 import kz.cifron.smartcon.presentation.dialog.BottomSheetFragment
@@ -26,7 +25,8 @@ class CounterFragment : Fragment() {
     private var task : Tasks? = null
     private lateinit var cameraManager: CameraManager
     private lateinit var cameraId : String
-    private var isFlashlightOn = false
+
+    private var isFlashLightOn = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,9 +43,11 @@ class CounterFragment : Fragment() {
 
         val toggleFlashLightOn = binding.flashLightBtn
         toggleFlashLightOn.setOnClickListener {
-            toggleFlashlight()
-            Log.d("CounterFlash", "flash is working")
-            Toast.makeText(requireContext(), "flash on", Toast.LENGTH_SHORT).show()
+            if(isFlashLightOn){
+                turnOffFlashLight()
+            }else{
+                turnOnFlashLight()
+            }
         }
 
         if (ContextCompat.checkSelfPermission(
@@ -60,6 +62,31 @@ class CounterFragment : Fragment() {
             )
         }
         return binding.root
+    }
+
+    private fun turnOnFlashLight() {
+        try{
+            if(cameraId.isNotEmpty()){
+                cameraManager.setTorchMode(cameraId,true)
+                isFlashLightOn = true
+                Log.d("CounterFragment", "turnOnFlashLight: true")
+            }
+        }catch (e : CameraAccessException){
+            e.printStackTrace()
+        }
+    }
+
+    private fun turnOffFlashLight() {
+        try {
+            if(cameraId.isNotEmpty()){
+                cameraManager.setTorchMode(cameraId,false)
+                isFlashLightOn = false
+                Log.d("CounterFragment", "turnOnFlashLight: false")
+
+            }
+        }catch (e : CameraAccessException){
+            e.printStackTrace()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,7 +109,6 @@ class CounterFragment : Fragment() {
     ) {
         if (requestCode == 1) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Разрешение предоставлено, вы можете использовать фонарик.
             }
         }
     }
@@ -108,23 +134,14 @@ class CounterFragment : Fragment() {
         }
     }
 
-    private fun sendData(){
+    private fun sendData() {
         val cameraFragment = CameraFragment()
         val bundle = Bundle()
-        bundle.putParcelable("task",task)
+        bundle.putParcelable("task", task)
         cameraFragment.arguments = bundle
-        findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment,bundle)
+        findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment, bundle)
 
     }
-    private fun toggleFlashlight() {
-        isFlashlightOn = !isFlashlightOn
-        try{
-            cameraManager.setTorchMode(cameraId,isFlashlightOn)
-        }catch (e : CameraAccessException){
-            e.printStackTrace()
-        }
-    }
-
 
     private fun showBottomSheet() {
         val bottomSheetFragment = BottomSheetFragment()
