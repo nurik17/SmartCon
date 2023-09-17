@@ -16,6 +16,7 @@ import android.Manifest
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCounterBinding
 import kz.cifron.smartcon.presentation.dialog.BottomSheetFragment
+import kz.cifron.smartcon.presentation.dialog.FirstDialogFragment
 import kz.cifron.smartcon.presentation.home.Tasks
 
 class CounterFragment : Fragment() {
@@ -35,6 +36,19 @@ class CounterFragment : Fragment() {
         _binding = FragmentCounterBinding.inflate(inflater,container,false)
 
         cameraManager = activity?.getSystemService(CameraManager::class.java) as CameraManager
+
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.CAMERA),
+                1
+            )
+        }
+
         try{
             cameraId = cameraManager.cameraIdList[0]
         }catch (e : CameraAccessException){
@@ -49,19 +63,25 @@ class CounterFragment : Fragment() {
                 turnOnFlashLight()
             }
         }
-
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.CAMERA),
-                1
-            )
-        }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        receiveDataFromHome()
+
+        binding.arrowBackBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.textDetail.setOnClickListener {
+            val customDialogFragment = FirstDialogFragment()
+            customDialogFragment.show(childFragmentManager, "custom_dialog")
+
+        }
+        binding.counterBtn.setOnClickListener {
+            sendData()
+        }
     }
 
     private fun turnOnFlashLight() {
@@ -89,18 +109,7 @@ class CounterFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        receiveDataFromHome()
-        navigationBackArrow()
 
-        binding.textDetail.setOnClickListener {
-            findNavController().navigate(R.id.action_id_counterFragment_to_firstDialogFragment)
-        }
-        binding.counterBtn.setOnClickListener {
-            sendData()
-        }
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -127,12 +136,6 @@ class CounterFragment : Fragment() {
         }
     }
 
-
-    private fun navigationBackArrow(){
-        binding.arrowBackBtn.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
 
     private fun sendData() {
         val cameraFragment = CameraFragment()

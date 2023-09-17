@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_anonim"
+        android:icon="@drawable/ic_anonim"
+        android:title="Анонимное сообщение" />
+    <item
+        android:id="@+id/menu_acts"
+        android:icon="@drawable/ic_acts"
+        android:title="Акты"
+        />
+    <item
+        android:id="@+id/menu_ended"
+        android:icon="@drawable/ic_acts"
+        android:title="Завершенные акты"
+       />
+</menu>

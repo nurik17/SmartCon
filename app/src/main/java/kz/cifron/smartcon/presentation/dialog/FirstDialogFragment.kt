@@ -1,29 +1,47 @@
 package kz.cifron.smartcon.presentation.dialog
 
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
 import kz.cifron.smartcon.R
-import kz.cifron.smartcon.databinding.FragmentFirstDialogBinding
 
 class FirstDialogFragment : DialogFragment() {
-    private var _binding : FragmentFirstDialogBinding? = null
-    private val binding get() = _binding!!
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFirstDialogBinding.inflate(inflater, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_first_dialog, container, false)
 
-        binding.textView1.setOnClickListener {
+        val buttonOpenDialog1 = rootView.findViewById<TextView>(R.id.textView1)
+        val buttonOpenDialog2 = rootView.findViewById<TextView>(R.id.textView2)
+
+        buttonOpenDialog1.setOnClickListener {
             dismiss()
-            findNavController().navigate(R.id.action_firstDialogFragment_to_bottomSheetFragment)
+            val dialog1 = BottomSheetFragment()
+            dialog1.show(parentFragmentManager, "dialog1")
+
+
         }
-        return binding.root
+
+        buttonOpenDialog2.setOnClickListener {
+            dismiss()
+            val dialog2 = SecondDialogFragment()
+            dialog2.show(parentFragmentManager, "dialog2")
+        }
+
+        return rootView
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            setCanceledOnTouchOutside(true)
+        }
+    }
 }

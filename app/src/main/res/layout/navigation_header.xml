@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/profileImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/profile_image"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/menu_item_anonim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:text="John Doe"
+        app:layout_constraintTop_toTopOf="@id/profileImage"
+        app:layout_constraintStart_toEndOf="@id/profileImage"
+        android:textSize="18sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/menu_item_acts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Мырзакент"
+        android:layout_marginStart="25dp"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/menu_item_anonim"
+        app:layout_constraintStart_toEndOf="@id/profileImage"
+        android:layout_marginTop="5dp"
+        android:textColor="#828282"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

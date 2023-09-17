@@ -1,16 +1,20 @@
 package kz.cifron.smartcon.presentation.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -29,6 +33,9 @@ class HomeFragment : Fragment() {
     private var originalTaskList: List<Tasks> = emptyList()
 
     private var requestCamera : ActivityResultLauncher<String>? = null
+
+    private lateinit var drawerLayout: DrawerLayout
+
 
 
 
@@ -54,9 +61,13 @@ class HomeFragment : Fragment() {
             binding.fabBtn.setImageResource(R.drawable.ic_scan)
         }
 
+        drawerLayout = binding.drawerlayout
+
+
         return binding.root
     }
 
+    @SuppressLint("RtlHardcoded")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -81,9 +92,49 @@ class HomeFragment : Fragment() {
             Log.d("HomeFragment", "Task addr : ${task.ADDR}")
             findNavController().navigate(R.id.action_id_homeFragment_to_counterFragment, bundle)
         }
+
+/*
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            val drawerLayout = binding.drawerlayout
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                // Если боковое меню открыто, закройте его
+                drawerLayout.closeDrawer(Gravity.LEFT)
+            } else {
+                // В противном случае выполните навигацию "назад"
+                findNavController().popBackStack()
+            }
+        }
+*/
+
+
+        binding.menuButton.setOnClickListener {
+            drawerLayout.openDrawer(Gravity.LEFT)
+        }
+
+        val navigationView = binding.navigationView
+
+        navigationView.setNavigationItemSelectedListener { menuItem->
+            when(menuItem.itemId){
+                R.id.menu_anonim ->{
+                    findNavController().navigate(R.id.tabLayoutFragment)
+                    drawerLayout.closeDrawer(Gravity.LEFT)
+                    true
+                }
+                R.id.menu_acts ->{
+                    findNavController().navigate(R.id.actFragment)
+                    drawerLayout.closeDrawer(Gravity.LEFT)
+                    true
+                }
+                R.id.menu_ended ->{
+                    findNavController().navigate(R.id.endedActsFragment)
+                    drawerLayout.closeDrawer(Gravity.LEFT)
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
-
-
 
     private fun setUpRecyclerView(){
         taskAdapter = TaskAdapter()

@@ -9,7 +9,6 @@ import retrofit2.http.Part
 
 
 interface ResultApi {
-
     @Multipart
     @POST("addData")
     fun uploadDataToServer(

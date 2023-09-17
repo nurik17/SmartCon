@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="ripple_color">#E7E1FE</color>
+    <color name="menu_icon_color">#876AFA</color>
 
 </resources>

@@ -1,23 +1,17 @@
 package kz.cifron.smartcon.presentation.result
 
-
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
 
-class ResultRepository(private val apiService: ResultApi) {
+class ResultRepository(private val api: ResultApi) {
 
-    fun uploadDataToServer(id: RequestBody, newInSch: RequestBody, image: MultipartBody.Part): String {
-        try {
-            val response = apiService.uploadDataToServer(id, newInSch, image).execute()
-            if (response.isSuccessful) {
-                val result = response.body()?.RESULT
-                if (!result.isNullOrEmpty()) {
-                    return "Data has been updated"
-                }
-            }
-            return "This task not found"
-        } catch (e: Exception) {
-            return "FAILURE"
-        }
+    fun uploadDataToServer(id: String, newInSch: String, imagePart: MultipartBody.Part): Call<ResultApiResponse> {
+        return api.uploadDataToServer(
+            id.toRequestBody(), // Определяйте это расширение
+            newInSch.toRequestBody(), // Определяйте это расширение
+            imagePart
+        )
     }
 }
+
