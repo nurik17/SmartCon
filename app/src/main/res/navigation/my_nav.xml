@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/id_loginFragment"
-        android:name="kz.cifron.smartcon.presentation.login.LoginFragment"
+        android:name="kz.cifron.smartcon.feature_login.presentation.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_id_loginFragment_to_id_homeFragment"
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/id_homeFragment"
-        android:name="kz.cifron.smartcon.presentation.home.HomeFragment"
+        android:name="kz.cifron.smartcon.feature_home.presentation.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -25,7 +25,7 @@
             app:destination="@id/id_counterFragment" />
         <argument
             android:name="task"
-            app:argType="kz.cifron.smartcon.presentation.home.Tasks" />
+            app:argType="kz.cifron.smartcon.feature_home.data.Tasks" />
         <action
             android:id="@+id/action_id_homeFragment_to_scannerFragment"
             app:destination="@id/scannerFragment" />
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/id_counterFragment"
-        android:name="kz.cifron.smartcon.presentation.counter.CounterFragment"
+        android:name="kz.cifron.smartcon.feature_counter.CounterFragment"
         android:label="fragment_counter"
         tools:layout="@layout/fragment_counter" >
         <action
@@ -42,7 +42,7 @@
             app:destination="@id/cameraFragment" />
         <argument
             android:name="counterData"
-            app:argType="kz.cifron.smartcon.presentation.home.Tasks" />
+            app:argType="kz.cifron.smartcon.feature_home.data.Tasks" />
         <action
             android:id="@+id/action_id_counterFragment_to_firstDialogFragment"
             app:destination="@id/firstDialogFragment" />
@@ -87,7 +87,7 @@
             app:argType="string" />
         <argument
             android:name="task"
-            app:argType="kz.cifron.smartcon.presentation.home.Tasks" />
+            app:argType="kz.cifron.smartcon.feature_home.data.Tasks" />
         <action
             android:id="@+id/action_cameraFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
@@ -104,7 +104,7 @@
             app:destination="@id/resultFragment" />
         <argument
             android:name="task"
-            app:argType="kz.cifron.smartcon.presentation.home.Tasks" />
+            app:argType="kz.cifron.smartcon.feature_home.data.Tasks" />
         <argument
             android:name="image"
             app:argType="string" />
@@ -115,7 +115,14 @@
         android:id="@+id/resultFragment"
         android:name="kz.cifron.smartcon.presentation.result.ResultFragment"
         android:label="fragment_result"
-        tools:layout="@layout/fragment_result" />
+        tools:layout="@layout/fragment_result" >
+        <action
+            android:id="@+id/action_resultFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_resultFragment_to_id_counterFragment"
+            app:destination="@id/id_counterFragment" />
+    </fragment>
     <fragment
         android:id="@+id/scannerFragment"
         android:name="kz.cifron.smartcon.presentation.counter.ScannerFragment"

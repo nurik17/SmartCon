@@ -101,5 +101,11 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0' // Если вы хотите использовать текст как ответ
 
+    //room
+    def room_version = "2.5.2"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
 
 }

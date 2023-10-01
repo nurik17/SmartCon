@@ -1,33 +1,23 @@
 package kz.cifron.smartcon.presentation.result
 
-import android.util.Log
-import okhttp3.MultipartBody
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import retrofit2.Call
-import retrofit2.Callback
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import retrofit2.Response
-
+import java.io.File
 
 class ResultViewModel(private val repository: ResultRepository) : ViewModel() {
+    private val _uploadResponse = MutableLiveData<Response<ResponseBody>>()
+    val uploadResponse: LiveData<Response<ResponseBody>> = _uploadResponse
 
-    fun uploadData(id: String, newInSch: String, imagePart: MultipartBody.Part) {
-        repository.uploadDataToServer(id, newInSch, imagePart).enqueue(object : Callback<ResultApiResponse> {
-            override fun onResponse(call: Call<ResultApiResponse>, response: Response<ResultApiResponse>) {
-                if (response.isSuccessful) {
-                    val resultApiResponse = response.body()
-                    if (resultApiResponse != null) {
-                        Log.d("ResultFragment", "Успешный ответ от сервера: $resultApiResponse")
-                    } else {
-                        Log.d("ResultFragment", "Ошибка: ответ от сервера пустой")
-                    }
-                } else {
-                    Log.e("ResultFragment", "Ошибка: сервер вернул неуспешный статус код ${response.code()}")
-                }
-            }
-
-            override fun onFailure(call: Call<ResultApiResponse>, t: Throwable) {
-                // Ошибка при выполнении запроса
-            }
-        })
+    fun uploadData(imageFile: File, text: String, id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = repository.uploadData(imageFile, text, id)
+            _uploadResponse.postValue(response)
+        }
     }
 }

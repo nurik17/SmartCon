@@ -1,9 +1,7 @@
-package kz.cifron.smartcon.presentation.home
-import android.content.Context
+package kz.cifron.smartcon.feature_home.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kz.cifron.smartcon.presentation.login.LoginRepository
-import kz.cifron.smartcon.presentation.login.LoginViewModel
+import kz.cifron.smartcon.feature_home.domain.TaskRepository
 
 class TaskViewModelFactory(private val repository: TaskRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

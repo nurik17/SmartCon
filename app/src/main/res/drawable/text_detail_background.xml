@@ -9,9 +9,6 @@
                 android:width="1.4dp"
                 android:color="#ECECEC" />
                 <corners android:radius="8dp" />
-           <!-- <size
-                android:width="100dp"
-                android:height="40dp"/>-->
         </shape>
     </item>
 </layer-list>

@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.login
+package kz.cifron.smartcon.feature_login.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentLoginBinding
+import kz.cifron.smartcon.feature_login.domain.LoginRepository
+import kz.cifron.smartcon.feature_login.data.LoginState
+import kz.cifron.smartcon.feature_login.domain.RetrofitClient
+import kz.cifron.smartcon.feature_login.data.User
 
 
 class LoginFragment : Fragment() {
@@ -51,6 +55,12 @@ class LoginFragment : Fragment() {
             if(rememberMe){
                 viewModel.saveUserInfo(email,password)
             }
+           /* val buttonColor = if(email.isEmpty() && password.isEmpty()){
+                R.color.buttonBackgroundEmpty
+            }else{
+                R.color.buttonBackgroundFilled
+            }
+            binding.loginButton.setBackgroundResource(buttonColor)*/
         }
         binding.saveCheckBox.setOnCheckedChangeListener { _, isChecked ->
             val message = if(isChecked) "user info will be saved" else "User info will not be saved"
@@ -84,8 +94,9 @@ class LoginFragment : Fragment() {
         findNavController().navigate(R.id.action_id_loginFragment_to_id_homeFragment)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 

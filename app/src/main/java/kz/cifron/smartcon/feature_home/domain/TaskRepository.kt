@@ -1,7 +1,8 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.domain
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kz.cifron.smartcon.feature_home.data.TaskState
 
 class TaskRepository(private val itemApi: TaskApi) {
 

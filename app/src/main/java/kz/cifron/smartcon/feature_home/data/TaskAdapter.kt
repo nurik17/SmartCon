@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.data
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

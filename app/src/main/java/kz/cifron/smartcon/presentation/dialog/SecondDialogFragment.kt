@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import kz.cifron.smartcon.presentation.home.HomeFragment
+import kz.cifron.smartcon.feature_home.presentation.HomeFragment
 
 class SecondDialogFragment : DialogFragment() {
 

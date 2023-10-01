@@ -1,5 +1,6 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.domain
 
+import kz.cifron.smartcon.feature_home.data.Tasks
 import retrofit2.Response
 import retrofit2.http.GET
 

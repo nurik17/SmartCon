@@ -1,8 +1,5 @@
-package kz.cifron.smartcon.presentation.login
+package kz.cifron.smartcon.feature_login.presentation
 
-import android.accounts.AccountManager.KEY_PASSWORD
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,10 +7,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import kz.cifron.smartcon.feature_login.domain.LoginRepository
+import kz.cifron.smartcon.feature_login.data.LoginState
 
-class LoginViewModel(private val repository: LoginRepository,private val context: Context) : ViewModel() {
+class LoginViewModel(private val repository: LoginRepository, private val context: Context) : ViewModel() {
 
     val loginStateLiveData = MutableLiveData<LoginState>()
 

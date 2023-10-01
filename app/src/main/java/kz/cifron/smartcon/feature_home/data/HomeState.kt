@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.data
 
 sealed class TaskState {
     object Loading : TaskState()

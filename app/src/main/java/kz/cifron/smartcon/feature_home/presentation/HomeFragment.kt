@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,10 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,19 +19,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentHomeBinding
+import kz.cifron.smartcon.feature_home.data.TaskAdapter
+import kz.cifron.smartcon.feature_home.domain.TaskRepository
+import kz.cifron.smartcon.feature_home.domain.TaskRetrofitClient
+import kz.cifron.smartcon.feature_home.data.TaskState
+import kz.cifron.smartcon.feature_home.data.Tasks
 import java.util.Locale
 
 
 class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+
     private lateinit var taskViewModel : TaskViewModel
     private lateinit var taskAdapter: TaskAdapter
 
     private var originalTaskList: List<Tasks> = emptyList()
-
     private var requestCamera : ActivityResultLauncher<String>? = null
-
     private lateinit var drawerLayout: DrawerLayout
 
 
@@ -93,18 +96,6 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_id_homeFragment_to_counterFragment, bundle)
         }
 
-/*
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            val drawerLayout = binding.drawerlayout
-            if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                // Если боковое меню открыто, закройте его
-                drawerLayout.closeDrawer(Gravity.LEFT)
-            } else {
-                // В противном случае выполните навигацию "назад"
-                findNavController().popBackStack()
-            }
-        }
-*/
 
 
         binding.menuButton.setOnClickListener {
@@ -112,7 +103,6 @@ class HomeFragment : Fragment() {
         }
 
         val navigationView = binding.navigationView
-
         navigationView.setNavigationItemSelectedListener { menuItem->
             when(menuItem.itemId){
                 R.id.menu_anonim ->{
@@ -154,7 +144,7 @@ class HomeFragment : Fragment() {
                     originalTaskList = state.tasks
                     taskAdapter.differ.submitList(originalTaskList)
                 }
-                is TaskState.Error->{
+                is TaskState.Error ->{
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(requireContext(), "Api is error data holded", Toast.LENGTH_SHORT).show()
                 }

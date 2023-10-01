@@ -24,7 +24,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.navigation.fragment.findNavController
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCameraBinding
-import kz.cifron.smartcon.presentation.home.Tasks
+import kz.cifron.smartcon.feature_home.data.Tasks
 import kz.cifron.smartcon.presentation.result.ResultFragment
 
 import java.text.SimpleDateFormat
@@ -38,10 +38,11 @@ class CameraFragment : Fragment() {
     private var _binding : FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
-    private var receivedTask: Tasks? = null
-
     private lateinit var cameraExecutor: Executor
     var imageCapture: ImageCapture? = null
+
+    private var receivedTask: Tasks? = null
+
 
     private val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
         .format(System.currentTimeMillis())
@@ -69,6 +70,7 @@ class CameraFragment : Fragment() {
     ): View? {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
         cameraExecutor = ContextCompat.getMainExecutor(requireContext())
+
         return binding.root
     }
 
@@ -90,6 +92,7 @@ class CameraFragment : Fragment() {
             receivedTask = it.getParcelable("task")
             Log.d("CameraFragment", receivedTask!!.ADDR)
         }
+
 
     }
 
@@ -115,7 +118,6 @@ class CameraFragment : Fragment() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val imageUri = outputFileResults.savedUri
-
 
                     val bundle = Bundle()
                     bundle.putString("imageUri", imageUri.toString())

@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -21,7 +21,7 @@ data class Tasks(
     val NAME_TIPSCH: String,
     val OUTSALDO: String,
     val POVERKA_DATE: String,
-    val RAZ_TIPSCH: Int,
+    var RAZ_TIPSCH: Int,
     val TYPE_ORDER: Int,
     val id: Int
 ) : Parcelable

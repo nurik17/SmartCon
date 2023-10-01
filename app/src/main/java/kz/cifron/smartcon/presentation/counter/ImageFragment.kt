@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentImageBinding
-import kz.cifron.smartcon.presentation.home.Tasks
+import kz.cifron.smartcon.feature_home.data.Tasks
 import kz.cifron.smartcon.presentation.result.ResultFragment
 
 class ImageFragment : Fragment() {

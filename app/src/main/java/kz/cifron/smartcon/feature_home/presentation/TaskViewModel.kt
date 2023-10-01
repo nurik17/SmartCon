@@ -1,18 +1,13 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import java.lang.Exception
-import java.util.Locale
+import kz.cifron.smartcon.feature_home.domain.TaskRepository
 
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     val taskLiveData = repository.taskStateLiveData
-
-
 
     fun getTasks() {
         viewModelScope.launch {

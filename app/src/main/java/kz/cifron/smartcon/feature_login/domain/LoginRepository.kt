@@ -1,5 +1,7 @@
-package kz.cifron.smartcon.presentation.login
+package kz.cifron.smartcon.feature_login.domain
 
+import kz.cifron.smartcon.feature_login.data.LoginRequestBody
+import kz.cifron.smartcon.feature_login.data.LoginResponse
 import retrofit2.Response
 
 class LoginRepository(private val apiService: LoginApi) {

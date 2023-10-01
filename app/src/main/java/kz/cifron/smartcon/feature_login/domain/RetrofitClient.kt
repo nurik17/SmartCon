@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.login
+package kz.cifron.smartcon.feature_login.domain
 import kz.cifron.smartcon.utils.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.login
+package kz.cifron.smartcon.feature_login.data
 
 
 sealed class LoginState {

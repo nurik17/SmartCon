@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.home
+package kz.cifron.smartcon.feature_home.domain
 
 import kz.cifron.smartcon.utils.Constant
 import okhttp3.Interceptor

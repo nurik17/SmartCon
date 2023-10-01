@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.ConSmart" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
+    <style name="Base.Theme.ConSmart" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="color">#876AFA</item>
+        <item name="android:windowBackground">#F2F2F2</item>
     </style>
 
     <style name="Theme.ConSmart" parent="Base.Theme.ConSmart" />
@@ -11,7 +13,6 @@
         <item name="android:layout_marginTop">32dp</item>
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginBottom">32dp</item>
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
     </style>
@@ -20,6 +21,22 @@
         <item name="colorControlHighlight">@color/ripple_color</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
+
+    <style name="Base.Theme.ConSmart.RippleRecyclerItem">
+        <item name="colorControlHighlight">@color/ripple_color_recycler_item</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="Base.Theme.ConSmart.MyRippleFlashLight">
+        <item name="colorControlHighlight">#876AFA</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="Base.Theme.ConSmart.TextRiple">
+        <item name="colorControlHighlight">@color/ripple_color</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
 
     <style name="Button.White" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@android:color/white</item>
