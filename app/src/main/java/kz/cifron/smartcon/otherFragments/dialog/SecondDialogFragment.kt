@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.dialog
+package kz.cifron.smartcon.otherFragments.dialog
 
 import android.app.Dialog
 import android.os.Bundle

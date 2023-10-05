@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.dialog
+package kz.cifron.smartcon.otherFragments.dialog
 
 
 import android.app.Dialog
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import kz.cifron.smartcon.R

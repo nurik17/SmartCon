@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.counter
+package kz.cifron.smartcon.otherFragments.counter
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -25,13 +25,14 @@ import androidx.navigation.fragment.findNavController
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCameraBinding
 import kz.cifron.smartcon.feature_home.data.Tasks
-import kz.cifron.smartcon.presentation.result.ResultFragment
+import kz.cifron.smartcon.feature_result.presentation.ResultFragment
 
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executor
 
 private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss"
+private const val TAG = "CameraFragment"
 
 class CameraFragment : Fragment() {
 
@@ -42,6 +43,7 @@ class CameraFragment : Fragment() {
     var imageCapture: ImageCapture? = null
 
     private var receivedTask: Tasks? = null
+    private var filledValues : String? = null
 
 
     private val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
@@ -93,6 +95,8 @@ class CameraFragment : Fragment() {
             Log.d("CameraFragment", receivedTask!!.ADDR)
         }
 
+        filledValues = arguments?.getString("filledValues")
+        Log.d(TAG, "getData $filledValues ")
 
     }
 
@@ -124,6 +128,8 @@ class CameraFragment : Fragment() {
 
                     val imageFragment = ImageFragment()
                     bundle.putParcelable("task",receivedTask)
+                    bundle.putString("filledValues",filledValues)
+                    Log.d(TAG, "sendData $filledValues")
                     imageFragment.arguments = bundle
 
                     findNavController().navigate(R.id.action_cameraFragment_to_imageFragment,bundle)
@@ -160,7 +166,6 @@ class CameraFragment : Fragment() {
             val preview = Preview.Builder().build()
             preview.setSurfaceProvider(binding.viewFinder.surfaceProvider)
             imageCapture = ImageCapture.Builder().build()
-
             cameraProvider.unbindAll()
             cameraProvider.bindToLifecycle(
                 requireActivity(),
@@ -202,7 +207,3 @@ class CameraFragment : Fragment() {
         _binding = null
     }
 }
-// Фонарик косу дурыстап
-// barcode дурыстап жазу
-//profile жасап тастау
-// бактарды дурыстау

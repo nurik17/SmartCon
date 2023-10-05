@@ -13,13 +13,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import android.Manifest
+import android.content.res.ColorStateList
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kz.cifron.smartcon.R
 import kz.cifron.smartcon.databinding.FragmentCounterBinding
-import kz.cifron.smartcon.presentation.dialog.FirstDialogFragment
+import kz.cifron.smartcon.otherFragments.dialog.FirstDialogFragment
 import kz.cifron.smartcon.feature_home.data.Tasks
-import kz.cifron.smartcon.presentation.counter.CameraFragment
+import kz.cifron.smartcon.otherFragments.counter.CameraFragment
+
+
+private const val TAG = "CounterFragment"
 
 class CounterFragment : Fragment() {
     private var _binding: FragmentCounterBinding? = null
@@ -27,11 +31,12 @@ class CounterFragment : Fragment() {
 
     private lateinit var counterAdapter: CounterAdapter
 
-    private var task: Tasks? = null
     private lateinit var cameraManager: CameraManager
     private lateinit var cameraId: String
 
     private var isFlashLightOn = false
+    private var task: Tasks? = null
+    private var isRvItemsEmpty = true
 
 
     override fun onCreateView(
@@ -86,13 +91,34 @@ class CounterFragment : Fragment() {
         binding.counterBtn.setOnClickListener {
             sendData()
         }
-
+        updateButtonState()
     }
 
-    private fun customDialog(){
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }
+        }
+    }
+
+    private fun updateButtonState(){
+        if(isRvItemsEmpty){
+            binding.counterBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.isNotActiveButton))
+            binding.counterBtn.isEnabled = false
+        }else{
+            binding.counterBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.isActiveButton))
+            binding.counterBtn.isEnabled = true
+        }
+    }
+    private fun customDialog() {
         val customDialogFragment = FirstDialogFragment()
         customDialogFragment.show(childFragmentManager, "custom_dialog")
     }
+
     private fun itemClick() {
         val numericButtons = listOf(
             binding.one, binding.two, binding.three, binding.four, binding.five,
@@ -103,18 +129,27 @@ class CounterFragment : Fragment() {
             button.setOnClickListener {
                 val value = button.text.toString()
                 counterAdapter.updateValue(value)
+
+                isRvItemsEmpty = counterAdapter.itemCount == 0
+                updateButtonState()
             }
         }
         binding.icDelete.setOnClickListener {
             counterAdapter.resetValues()
+            isRvItemsEmpty = counterAdapter.itemCount == 0
+            updateButtonState()
         }
+
     }
 
     private fun setUpRecyclerView() {
         val razTipSchCount = task?.RAZ_TIPSCH ?: 0
         counterAdapter = CounterAdapter(razTipSchCount)
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(),razTipSchCount)
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), razTipSchCount)
         binding.recyclerView.adapter = counterAdapter
+
+        isRvItemsEmpty = counterAdapter.itemCount == 0
+        updateButtonState()
     }
 
     private fun turnOnFlashLight() {
@@ -141,18 +176,6 @@ class CounterFragment : Fragment() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == 1) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Обработка разрешения камеры
-            }
-        }
-    }
-
     private fun receiveDataFromHome() {
         task = arguments?.getParcelable<Tasks>("task")
         if (task != null) {
@@ -169,12 +192,26 @@ class CounterFragment : Fragment() {
         val cameraFragment = CameraFragment()
         val bundle = Bundle()
         bundle.putParcelable("task", task)
+        val filledValues = counterAdapter.getFilledValuesAsString()
+        bundle.putString("filledValues", filledValues)
+        Log.d(TAG, "sendData: $filledValues")
         cameraFragment.arguments = bundle
-        findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment, bundle)
+
+        val requiredLength = counterAdapter.razTipSchCount
+        if (filledValues.length != requiredLength) {
+            val snackBar = Snackbar.make(
+                requireView(),
+                "Заполните все ячейки полностью должно быть $requiredLength символов",
+                Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }else{
+            findNavController().navigate(R.id.action_id_counterFragment_to_cameraFragment, bundle)
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

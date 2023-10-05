@@ -42,11 +42,5 @@
         <item name="colorAccent">@android:color/white</item>
     </style>
 
-    <style name="MyFabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="android:background">@color/white</item>
-        <item name="android:src">@drawable/ic_scan</item>
-        <!-- Другие атрибуты, которые вы хотите переопределить для FAB -->
-    </style>
-
 
 </resources>

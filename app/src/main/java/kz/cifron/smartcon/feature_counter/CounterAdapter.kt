@@ -52,6 +52,10 @@ class CounterAdapter(var razTipSchCount : Int): RecyclerView.Adapter<CounterAdap
         return result.toString()
     }
 
+    fun checkRight(){
+
+    }
+
 
     inner class ViewHolder(val binding: CounterItemBinding) : RecyclerView.ViewHolder(binding.root)
 

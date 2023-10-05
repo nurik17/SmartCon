@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.burger
+package kz.cifron.smartcon.otherFragments.burger
 
 import android.content.Context
 import androidx.fragment.app.Fragment

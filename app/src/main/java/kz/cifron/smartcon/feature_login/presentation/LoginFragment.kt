@@ -1,10 +1,14 @@
 package kz.cifron.smartcon.feature_login.presentation
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,6 +26,9 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel : LoginViewModel
+
+    private var isLoginEmpty = true
+    private var isPasswordEmpty = true
 
 
     override fun onCreateView(
@@ -43,6 +50,8 @@ class LoginFragment : Fragment() {
         savedUserInfo?.let { (savedEmail, savedPassword) ->
             binding.editTextEmail.setText(savedEmail)
             binding.editTextPassword.setText(savedPassword)
+            isLoginEmpty = savedEmail.isEmpty()
+            isPasswordEmpty = savedPassword.isEmpty()
         }
 
         binding.loginButton.setOnClickListener {
@@ -55,18 +64,44 @@ class LoginFragment : Fragment() {
             if(rememberMe){
                 viewModel.saveUserInfo(email,password)
             }
-           /* val buttonColor = if(email.isEmpty() && password.isEmpty()){
-                R.color.buttonBackgroundEmpty
-            }else{
-                R.color.buttonBackgroundFilled
-            }
-            binding.loginButton.setBackgroundResource(buttonColor)*/
         }
         binding.saveCheckBox.setOnCheckedChangeListener { _, isChecked ->
             val message = if(isChecked) "user info will be saved" else "User info will not be saved"
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
+        binding.editTextEmail.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                isLoginEmpty = p0.isNullOrEmpty()
+                updateLoginButtonState()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        binding.editTextPassword.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                isPasswordEmpty = p0.isNullOrEmpty()
+                updateLoginButtonState()
+            }
+
+        })
         observeViewModel()
+        updateLoginButtonState()
+    }
+
+    private fun updateLoginButtonState() {
+        if(!isLoginEmpty || !isPasswordEmpty){
+            binding.loginButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.isActiveButton))
+            binding.loginButton.isEnabled = true
+        }else{
+            binding.loginButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.isNotActiveButton))
+            binding.loginButton.isEnabled = false
+        }
     }
 
     private fun observeViewModel() {

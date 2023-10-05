@@ -1,8 +1,7 @@
-package kz.cifron.smartcon.presentation.result
+package kz.cifron.smartcon.feature_result.domain
 
+import kz.cifron.smartcon.feature_result.data.ResultApiResponse
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
-import retrofit2.Response
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -14,6 +13,6 @@ interface ResultApi {
     suspend fun uploadData(
         @Part image: MultipartBody.Part,
         @Query("NEW_IN_SCH") text: String,
-        @Query("id") id: String
-    ): Response<ResponseBody>
+        @Query("id") id: Int
+    ): ResultApiResponse
 }

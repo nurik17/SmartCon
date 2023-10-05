@@ -7,7 +7,7 @@
     android:background="#E5E5E5"
     android:layout_height="match_parent"
     android:padding="12dp"
-    tools:context=".presentation.result.ResultFragment">
+    tools:context=".feature_result.presentation.ResultFragment">
 
     <ImageView
         android:id="@+id/arrow_back_btn"

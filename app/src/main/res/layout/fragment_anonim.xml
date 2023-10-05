@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#F2F2F2"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.burger.AnonimFragment">
+    tools:context=".otherFragments.burger.AnonimFragment">
 
 
     <androidx.cardview.widget.CardView

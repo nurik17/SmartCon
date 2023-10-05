@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.counter
+package kz.cifron.smartcon.otherFragments.counter
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector

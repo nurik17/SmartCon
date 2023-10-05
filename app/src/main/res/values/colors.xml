@@ -6,5 +6,6 @@
     <color name="ripple_color_recycler_item">#876AFA</color>
     <color name="menu_icon_color">#876AFA</color>
 
-
+    <color name="isActiveButton">#876AFA</color>
+    <color name="isNotActiveButton">#E7E1FE</color>
 </resources>

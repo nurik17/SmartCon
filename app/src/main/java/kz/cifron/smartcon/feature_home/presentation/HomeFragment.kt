@@ -51,7 +51,6 @@ class HomeFragment : Fragment() {
         val taskRepository = TaskRepository(taskApiService)
         taskViewModel = ViewModelProvider(this, TaskViewModelFactory(taskRepository))[TaskViewModel::class.java]
 
-
         requestCamera = registerForActivityResult(ActivityResultContracts.RequestPermission(),){
             if(it){
                 findNavController().navigate(R.id.action_id_homeFragment_to_scannerFragment)
@@ -61,11 +60,8 @@ class HomeFragment : Fragment() {
             binding.fabBtn.setOnClickListener {
                 requestCamera?.launch(android.Manifest.permission.CAMERA)
             }
-            binding.fabBtn.setImageResource(R.drawable.ic_scan)
         }
-
         drawerLayout = binding.drawerlayout
-
 
         return binding.root
     }

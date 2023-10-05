@@ -1,4 +1,4 @@
-package kz.cifron.smartcon.presentation.dialog
+package kz.cifron.smartcon.otherFragments.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -85,7 +85,6 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="48dp"
-        android:backgroundTint="#E7E1FE"
         android:textColor="@color/white"
         android:text="Войти"
         app:cornerRadius="5dp"
